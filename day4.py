@@ -1,4 +1,4 @@
-file = open("input.txt", "r")
+file = open("testinput.txt", "r")
 
 lines = file.readlines()
 lines.sort()
