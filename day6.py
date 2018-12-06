@@ -1,5 +1,5 @@
-file = open("testinput.txt", "r")
-limit = 32
+file = open("input.txt", "r")
+limit = 10000
 
 lines = file.readlines()
 
@@ -21,36 +21,20 @@ for line in lines:
     ix += 1
 
 scores = {}
-
+count = 0
 for x in range(0, max):
     for y in range(0, max):
-        mindist = 100000
-        tie = False
-        shortest = '.'
+        sumdist = 0
         for c in range(0, len(coords)):
             coord = coords[c]
             dist = abs(coord[0] - x) + abs(coord[1] - y)
-            if dist == mindist:
-                tie = True
-            if dist < mindist:
-                mindist = dist
-                shortest = c
-                tie = False
+            sumdist += dist
+
+        #print(str(sumdist))
             
-        if not tie:
-            if shortest in scores:
-                scores[shortest] += 1
-            else:
-                scores[shortest] = 1
+        if sumdist < limit:
+            count += 1
 
-        if x == 0 or y == 0 or x == max-1 or y == max -1:
-            scores[shortest] = -100000
-
-best = 0
-for s in scores:
-    if scores[s] > best:
-        best = scores[s]
-
-print(str(best))
+print(str(count))
 
 #10097 too high
