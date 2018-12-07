@@ -1,5 +1,13 @@
 import collections
 
+file = open("input.txt", "r")
+
+lines = file.readlines()
+
+done = []
+prq = {}
+
+workers = [[],[],[],[],[]]
 
 def goToWork(task):
     for i in range(0,len(workers)):
@@ -11,22 +19,12 @@ def goToWork(task):
                 worker.append(task)
             break
 
-
 def getDuration(task):
     num = ord(task) - 64
     return num + 60
 
-
-
-file = open("input.txt", "r")
-
-lines = file.readlines()
-
-done = []
-prq = {}
-
-workers = [[],[],[],[],[]]
-
+# initialize (which prerequisites are needed for a certain step): A -> (needs) -> [B, C, D]
+# This way, we can check if all needed steps are done (if so, we can execute 'post' task)
 for line in lines:
     spl = line.split(" ")
     pre = spl[1]
@@ -39,6 +37,7 @@ for line in lines:
 
     prq[post].append(pre)
 
+# Order keys alfabetically
 prq = collections.OrderedDict(sorted(prq.items()))
 
 ticks = 0
@@ -62,7 +61,7 @@ while len(done) < len(prq):
                 #add this one to a worker that is idling
                 goToWork(post)
 
-    # work work
+    # work, work!
     for i in range(0, len(workers)):
         worker = workers[i]
         if len(worker) > 0:
@@ -74,7 +73,4 @@ while len(done) < len(prq):
 
     ticks += 1
 
-
-print(str(ticks))
-
-#761 too high
+print("Ticks required: " + str(ticks))
