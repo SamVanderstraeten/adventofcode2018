@@ -1,9 +1,6 @@
 file = open("input.txt", "r")
-
-lines = file.readlines()
-line = lines[0]
+line = file.readlines()[0]
 numbers = line.split(" ")
-metas = []
 
 def parseNode(i=0):
     numChilds = int(numbers[i])
@@ -25,4 +22,3 @@ def parseNode(i=0):
 
 (value, count) = parseNode()
 print(str(value))
-
