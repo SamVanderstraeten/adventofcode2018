@@ -35,21 +35,20 @@ def tick():
         newpoints.append(v)
     points = newpoints
 
-    print(points[0])
-
 def printer(ticker):
     (maxX, maxY) = getMaxima()
     (minX, minY) = getMinima()
 
     if (maxX-minX) < 100 and (maxY-minY) < 100:
         print("Tick #" + str(ticker))
-        #build sky
+        #build sky when all points are in good range
         sky = []
         for row in range(0, (maxY-minY)+1):
             sky.append(['.'] * ((maxX-minX)+1))
         for point in points:
             sky[point[1]-minY][point[0]-minX] = '#'
                 
+        # print sky
         for row in range(0, len(sky)):
             for col in range(0, len(sky[0])):
                 sys.stdout.write(sky[row][col] + " ")
