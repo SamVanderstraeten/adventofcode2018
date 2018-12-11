@@ -3,38 +3,27 @@ limit = 10000
 
 lines = file.readlines()
 
-max = 0
-
+bounds = 0
 coords = {}
-ix = 0
-for line in lines:
-    spl = line.split(", ")
+for i in range(0, len(lines)):
+    spl = lines[i].split(", ")
     x = int(spl[0])
     y = int(spl[1])
+    coords[i] = [x, y]
 
-    if x > max:
-        max = x
-    if y > max:
-        max = y
+    if x > bounds or y > bounds:
+        bounds = max(x,y)    
     
-    coords[ix] = [x, y]
-    ix += 1
-
 scores = {}
 count = 0
-for x in range(0, max):
-    for y in range(0, max):
+for x in range(0, bounds):
+    for y in range(0, bounds):
         sumdist = 0
         for c in range(0, len(coords)):
             coord = coords[c]
             dist = abs(coord[0] - x) + abs(coord[1] - y)
-            sumdist += dist
-
-        #print(str(sumdist))
-            
+            sumdist += dist            
         if sumdist < limit:
             count += 1
 
 print(str(count))
-
-#10097 too high
