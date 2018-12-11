@@ -17,6 +17,7 @@ for i in range(0, len(lines)):
 scores = {}
 count = 0
 for x in range(0, bounds):
+    
     for y in range(0, bounds):
         sumdist = 0
         for c in range(0, len(coords)):
