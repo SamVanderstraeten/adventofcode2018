@@ -10,7 +10,6 @@ finalscorestart = -1
 targetfound = False
 
 targetLen = len(target)
-count = 0
 
 while not targetfound:
     currentA = scorelist[elfA]
@@ -18,36 +17,23 @@ while not targetfound:
     newscore = currentA + currentB
     if newscore > 9:
         scorelist.append(1)
-        scorelist.append(newscore % 10)
-    else:
-        scorelist.append(newscore)
+    scorelist.append(newscore % 10)
     elfA = (elfA + (1+currentA)) % len(scorelist)
     elfB = (elfB + (1+currentB)) % len(scorelist)
 
     if len(scorelist) > targetLen:
-        checker = ""
-        for i in range(len(scorelist)-targetLen, len(scorelist)):
-            checker += str(scorelist[i])
+        sublist = scorelist[-targetLen:]
+        checker = ''.join(str(x) for x in sublist)
         if checker == target:
             print("match found @1")
             targetfound = True
             recipes = len(scorelist) - targetLen
         
-        checker = ""
-        for i in range(len(scorelist)-(targetLen+1), len(scorelist)-1):
-            checker+= str(scorelist[i])
+        sublist = scorelist[-(targetLen+1):-1]
+        checker = ''.join(str(x) for x in sublist)
         if checker == target:
             print("match found @2")
             targetfound = True
             recipes = len(scorelist) - (targetLen+1)
 
-    count += 1
-    print(str(count))
-
 print(str("left: " + str(recipes)))
-
-'''result = ""
-for i in range(0, finalscorelength):
-    result += str(scorelist[recipes+i])
-
-print(result)'''
