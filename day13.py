@@ -1,4 +1,4 @@
-file = open("testinput.txt", "r")
+file = open("input.txt", "r")
 lines = file.readlines()
 
 carts = []
@@ -39,6 +39,10 @@ collision = False
 blackboxdata = []
 count = 0
 
+print("Initial state" + str(count))
+for cart in carts:
+    print(cart)
+
 while not collision:
     # update all carts
     for c in range(0, len(carts)):
@@ -52,7 +56,8 @@ while not collision:
 
         #carts[c] = (x + velx, y + vely, velx, vely, cross)
         # update velocities
-        if grid[y][x] == "+":
+        if grid[newPosY][newPosX] == "+":
+            print("CROSS")
             if cross == 0: # turn left
                 (vx, vy) = turn(velx, vely, 'left')
                 newVelX = vx
@@ -62,8 +67,8 @@ while not collision:
                 newVelX = vx
                 newVelY = vy
             newCross = (cross + 1) % 3
-        elif grid[y][x] == "/":
-            if vely == 0:
+        elif grid[newPosY][newPosX] == "/":
+            if velx == 0:
                 (vx, vy) = turn(velx, vely, 'right')
                 newVelX = vx
                 newVelY = vy
@@ -71,7 +76,7 @@ while not collision:
                 (vx, vy) = turn(velx, vely, 'left')
                 newVelX = vx
                 newVelY = vy
-        elif grid[y][x] == "\\":
+        elif grid[newPosY][newPosX] == "\\":
             if velx == 0:
                 (vx, vy) = turn(velx, vely, 'left')
                 newVelX = vx
@@ -80,9 +85,12 @@ while not collision:
                 (vx, vy) = turn(velx, vely, 'right')
                 newVelX = vx
                 newVelY = vy
+        elif not (grid[newPosY][newPosX] == "|" or grid[newPosY][newPosX] == "-"):
+            print("Off track!!")
+
         carts[c] = (newPosX, newPosY, newVelX, newVelY, newCross)
 
-    print("Iteration #" + str(count))
+    print("Iteration #" + str(count+1))
     for cart in carts:
         print(cart)
 
@@ -95,6 +103,10 @@ while not collision:
                     collision = True
 
                     blackboxdata = (carts[c1][0], carts[c1][1])
+
+    '''test = input("Go on?")
+    if test == "q" or test == "n":
+        collision = True'''
     
     count += 1
 
