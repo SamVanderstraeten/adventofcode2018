@@ -2,7 +2,7 @@ import sys
 import numpy as np
 from collections import OrderedDict
 
-file = open("input.txt", "r")
+file = open("inputarno.txt", "r")
 lines = file.readlines()
 
 DEFAULT_GRID_SIZE = 2500
@@ -160,58 +160,6 @@ def dropTheWater():
     for rem in spawn_rm:
         waterSpawns.remove(rem)
         
-
-'''def dropTheWater():
-    rm = []
-    for wi in range(0, len(runningWater)):
-        w = runningWater[wi]
-        # what if there's running water below? non existent?
-        if w[0]+1 >= len(grid): # stop at bottom
-            continue
-        elif grid[w[0]+1][w[1]] == 0: # sand below, continue running
-            w[0] += 1
-        elif (not [w[0],w[1]-1] in runningWater) or (not [w[0],w[1]+1] in runningWater): # stable water or clay below and not processed yet
-            # spread left & right
-            leftBorder = rightBorder = False
-            outerLeft = outerRight = None
-            waterplane = [w]
-            current = [w[0], w[1]]
-            # L
-            while (not grid[current[0]+1][current[1]] == 0) and (not grid[current[0]][current[1]-1] == 1): # find left
-                current[1] -= 1
-                waterplane.append([current[0], current[1]])
-            if grid[current[0]][current[1]-1] == 1:
-                leftBorder = True
-            else:
-                outerLeft = [current[0], current[1]]
-            # R
-            current = [w[0], w[1]]
-            while (not grid[current[0]+1][current[1]] == 0) and (current[1]+1 < len(grid[0])) and (not grid[current[0]][current[1]+1] == 1): # find right
-                current[1] += 1
-                waterplane.append([current[0], current[1]])
-            if (current[1]+1 < len(grid[0])) and grid[current[0]][current[1]+1] == 1:
-                rightBorder = True
-            else:
-                outerRight = [current[0], current[1]]
-
-            if leftBorder and rightBorder: # add settled water
-                for p in waterplane:
-                    grid[p[0]][p[1]] = 2
-                rm.append(wi)
-            else:
-                for p in waterplane:
-                    if not p in runningWater:
-                        runningWater.append(p)
-                if not outerLeft == None:
-                    waterSpawns.append(outerLeft)
-                if not outerRight == None:
-                    waterSpawns.append(outerRight)
-    
-    for r in range(0, len(rm)):
-        ri = max(rm)
-        del runningWater[ri]
-        rm.remove(ri) 
-'''
 def addWater():
     for spawn in waterSpawns:
         runningWater.append([spawn[0], spawn[1]])
@@ -246,10 +194,7 @@ prevReachable = -1
 done = False
 while not done:
     dropTheWater()    
-    #addWater()
     ticks += 1
-
-    #cleanRunningWater()
     print("Tick #" + str(ticks))
 
     currentReachable = countReachable()
@@ -257,10 +202,6 @@ while not done:
         done = True
         print("# Reachable: " + str(prevReachable))
     prevReachable = currentReachable
-    #printGrid()
-    #print(len(runningWater))
-    #print("Reach: " + str(countReachable()))
-    #input("Continue?")
 
 print("At rest: " + str(countAtRest()))
 printGrid()
