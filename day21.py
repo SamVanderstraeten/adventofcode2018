@@ -1,13 +1,102 @@
 file = open("input.txt", "r")
 lines = file.readlines()
 
+eqrrcount = 0
+eqrrs = []
+done = False
+
+def addr(registers, i):
+    registers[i[3]] = registers[i[1]] + registers[i[2]]
+    return registers
+
+def addi(registers, i):
+    registers[i[3]] = registers[i[1]] + i[2]
+    return registers
+
+def mulr(registers, i):
+    registers[i[3]] = registers[i[1]] * registers[i[2]]
+    return registers
+
+def muli(registers, i):
+    registers[i[3]] = registers[i[1]] * i[2]
+    return registers
+
+def banr(registers, i):
+    registers[i[3]] = registers[i[1]] & registers[i[2]]
+    return registers
+
+def bani(registers, i):
+    registers[i[3]] = registers[i[1]] & i[2]
+    return registers
+
+def borr(registers, i):
+    registers[i[3]] = registers[i[1]] | registers[i[2]]
+    return registers
+
+def bori(registers, i):
+    registers[i[3]] = registers[i[1]] | i[2]
+    return registers
+
+def setr(registers, i):
+    registers[i[3]] = registers[i[1]]
+    return registers
+
+def seti(registers, i):
+    registers[i[3]] = i[1]
+    return registers
+
+def gtir(registers, i):
+    registers[i[3]] = 1 if i[1] > registers[i[2]] else 0
+    return registers
+
+def gtri(registers, i):
+    registers[i[3]] = 1 if registers[i[1]] > i[2] else 0
+    return registers
+
+def gtrr(registers, i):
+    registers[i[3]] = 1 if registers[i[1]] > registers[i[2]] else 0
+    return registers
+
+def eqir(registers, i):
+    registers[i[3]] = 1 if i[1] == registers[i[2]] else 0
+    return registers
+
+def eqri(registers, i):
+    registers[i[3]] = 1 if registers[i[1]] == i[2] else 0
+    return registers
+
+def eqrr(registers, i):
+    global eqrrcount
+    global firstEQRR
+    global eqrrs
+    global done
+    eqrrcount += 1
+       
+    #print("EQRR " + str(eqrrcount))
+    print("EQRR " + str(eqrrcount))
+    if registers[3] in eqrrs:
+        #registers[3] is the first double > last added = answer
+        print("WE DONE")
+        print(">> " + str(eqrrs[-1]))
+        done = True  
+    else:
+        eqrrs.append(registers[3])
+
+    registers[i[3]] = 1 if registers[i[1]] == registers[i[2]] else 0
+    return registers
+
+banaan = {'addr': addr, "addi": addi, "mulr": mulr, "muli": muli, "banr": banr, "bani": bani, "borr": borr, "bori": bori, "setr": setr, "seti": seti, "gtir": gtir, "gtri": gtri, "gtrr": gtrr, "eqir": eqir, "eqri": eqri, "eqrr": eqrr}
+
 def execute(instruction):
-    global firstEQRR, prevEQRR
+    global eqrrcount
+    global firstEQRR
+    global prevEQRR
+    global done
 
     op = instruction[0]
-    inA = int(instruction[1])
-    inB = int(instruction[2])
-    outC = int(instruction[3])
+    inA = instruction[1]
+    inB = instruction[2]
+    outC = instruction[3]
     
     if op == "addr":
         registers[outC] = registers[inA] + registers[inB]
@@ -40,12 +129,13 @@ def execute(instruction):
     elif op == "eqri":
         registers[outC] = 1 if registers[inA] == inB else 0
     elif op == "eqrr":
+        eqrrcount += 1
        
-        print("EQRR")
+        print("EQRR " + str(eqrrcount))
         print(registers[3])
-        print("diff: " + str(registers[3] - prevEQRR))
-        prevEQRR = registers[3]
         if firstEQRR == registers[3]:
+            print("WE DONE")
+            print("###############################################################################")
             done = True  
         elif firstEQRR == -1:
             firstEQRR = registers[3]
@@ -70,16 +160,14 @@ for l in range(0, len(lines)):
 
 ip = 0
 count = 0
-done = False
-firstEQRR = -1
-prevEQRR = -1
-while ip >= 0 and ip < len(instructionset) and not done:
-    
+
+#while ip >= 0 and ip < len(instructionset) and not done:
+while not done:    
     registers[ipRegister] = ip
-    execute(instructionset[ip])
-    ip = registers[ipRegister]
-    ip += 1
-    count += 1
+    #execute(instructionset[ip])
+    registers = banaan[instructionset[ip][0]](registers, instructionset[ip])
+    ip = registers[ipRegister] + 1
+    #count += 1
 
     #print(registers)
     #input("COntiineeu?")
