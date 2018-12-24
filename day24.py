@@ -151,9 +151,10 @@ while not immuneWon:
                 
                 #future_damage = enemy.hp * (getDamage(current, enemy) // enemy.hp) #real dmg that is done to units
                 future_damage = getDamage(current, enemy)
-                if bestTarget == None or future_damage > mostDamage or (future_damage == mostDamage and enemy.getEffectivePower() > bestTarget.getEffectivePower()) or (future_damage == mostDamage and enemy.getEffectivePower() == bestTarget.getEffectivePower() and enemy.initiative > bestTarget.initiative):
-                    bestTarget = enemy
-                    mostDamage = future_damage
+                if future_damage > 0:
+                    if bestTarget == None or future_damage > mostDamage or (future_damage == mostDamage and enemy.getEffectivePower() > bestTarget.getEffectivePower()) or (future_damage == mostDamage and enemy.getEffectivePower() == bestTarget.getEffectivePower() and enemy.initiative > bestTarget.initiative):
+                        bestTarget = enemy
+                        mostDamage = future_damage
             current.turn = True
             current.target = bestTarget
             if not bestTarget == None:
