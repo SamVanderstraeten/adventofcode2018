@@ -42,7 +42,11 @@ for row in range(0,target[0]):
 printMap()
 print("Risk level: " + str(risk))
 
-def unvisited_neighbors(currentNode):
+# create 3D grid (3 layers of gridsize) (each layer is for 1 tool)
+# mark reachable/walkable terrain in each layer
+# setup graph & run dijkstra
+
+'''def unvisited_neighbors(currentNode):
     nbs = []
     for r in range(-1,2):
         for c in range(-1,2):
@@ -51,6 +55,7 @@ def unvisited_neighbors(currentNode):
             elif r == 0 or c == 0 and currentNode[0] + r >= 0 and currentNode[1] + c >= 0 and currentNode[0] + r < len(visited) and currentNode[1] + c < len(visited[0]):
                 if visited[currentNode[0] + r][currentNode[1] + c] == 0:
                     nbs.append([r,c])
+
 
 def get_cost(fromNode, toNode):
 
@@ -70,3 +75,4 @@ costgrid[current[0]][current[1]] = 0
 nbs = unvisited_neighbors(current)
 for nb in nbs:
     cost = get_cost(current, nb)
+'''
